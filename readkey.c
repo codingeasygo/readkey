@@ -30,5 +30,5 @@ void rk_release()
 
 int rk_read(char *buf, int len)
 {
-    return read(stdin->_file, buf, len);
+    return read(STDIN_FILENO, buf, len);
 }
