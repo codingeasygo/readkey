@@ -44,7 +44,9 @@ func Read() (key []byte, err error) {
 }
 
 func Close() {
-	C.rk_release()
+	if opened {
+		C.rk_release()
+	}
 }
 
 type winsize struct {

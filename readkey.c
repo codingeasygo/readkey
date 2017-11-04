@@ -13,9 +13,9 @@ void rk_init()
     tcgetattr(STDIN_FILENO, &oldterm);
     struct termios newterm;
     newterm = oldterm;
-    newterm.c_iflag = ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
-    newterm.c_lflag = ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-    newterm.c_cflag = (~(CSIZE | PARENB)) | CS8;
+    newterm.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+    newterm.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+    newterm.c_cflag &= (~(CSIZE | PARENB)) | CS8;
     newterm.c_cc[VMIN] = 1;
     newterm.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSANOW, &newterm);
