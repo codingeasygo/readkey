@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/sutils/readkey"
 
@@ -20,6 +21,7 @@ func main() {
 		fmt.Printf("Usage: rkeynet <remote uri>\n")
 		return
 	}
+	cols, rows := readkey.GetSize()
 	var uri string
 	uri = os.Args[1]
 	var err error
@@ -30,8 +32,18 @@ func main() {
 		case "tcp":
 			conn, err = net.Dial("tcp", rurl.Host)
 		case "ws":
+			if strings.Contains(uri, "?") {
+				uri += fmt.Sprintf("&cols=%v&rows=%v", cols, rows)
+			} else {
+				uri += fmt.Sprintf("?cols=%v&rows=%v", cols, rows)
+			}
 			conn, err = websocket.Dial(uri, "", "https://"+rurl.Host)
 		case "wss":
+			if strings.Contains(uri, "?") {
+				uri += fmt.Sprintf("&cols=%v&rows=%v", cols, rows)
+			} else {
+				uri += fmt.Sprintf("?cols=%v&rows=%v", cols, rows)
+			}
 			conn, err = websocket.Dial(uri, "", "https://"+rurl.Host)
 		case "unix":
 			conn, err = net.Dial("unix", rurl.Host)
